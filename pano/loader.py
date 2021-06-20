@@ -3,6 +3,7 @@ import logging
 import os.path
 import traceback
 
+
 from pano.matcher import match
 from utils.helpers import (
     COLOR_GRAY,
@@ -20,6 +21,9 @@ from utils.profiler import checkpoint
 from utils.signatures import get_func_name, make_abi
 from utils.supplement import fetch_sig
 
+import asyncio
+from bscscan import BscScan
+
 logger = logging.getLogger(__name__)
 
 cache_sigs = {
@@ -27,15 +31,27 @@ cache_sigs = {
     False: {},
 }
 
+async def code_bsc_fetch(address):
+    """get bytecode from bscscan"""
+    async with BscScan(os.environ['BSCSCAN_API_KEY']) as client:
+        code = await client.get_proxy_code_at(
+                address
+            )
+    return code
+
 
 def code_fetch(address, network="mainnet"):
     assert (
         network == "mainnet"
     ), "only mainnet supported, but you can set WEB3_PROVIDER_URI to whatever node you want on whatever network"
 
-    from web3.auto import w3
+    # from web3.auto import w3
+    from web3 import Web3
+    w3 = Web3() # https://github.com/ethereum/web3.py/issues/485
+    w3 = Web3(Web3.HTTPProvider('https://mainnet.infura.io/v3/' + os.environ["WEB3_INFURA_PROJECT_ID"]))
 
-    code = w3.eth.getCode(address).hex()[2:]
+    code = w3.eth.get_code(address).hex()[2:]
+    # print(code)
 
     return code
 
@@ -148,7 +164,8 @@ class Loader(EasyCopy):
 
             code = ""
             for network in "mainnet", "goerli", "ropsten", "kovan", "rinkeby":
-                code = code_fetch(address, network)
+                # code = code_fetch(address, network)
+                code = asyncio.run(code_bsc_fetch(address))
                 if len(code) > 0:
                     self.network = network
                     break

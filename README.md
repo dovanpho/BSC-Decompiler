@@ -1,9 +1,12 @@
-## Important
+# BSC Bytecode Decompiler
 
-Palkeo is maintaining a more up to date for of Panoramix. Be sure to check it out:
+Decompile binance smart chain contracts from bytecode. 
 
-https://github.com/palkeo/panoramix
+You will need to set the env variable:
 
+```
+export BSCSCAN_API_KEY='YOUR BSC SCAN API KEY'
+```
 
 ## Installation:
 
