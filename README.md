@@ -8,6 +8,60 @@ You will need to set the env variable:
 export BSCSCAN_API_KEY='YOUR BSC SCAN API KEY'
 ```
 
+# Example:
+
+```
+python3.9 panoramix.py 0xcc598232a75fB1B361510Bce4Ca39d7bC39cf498
+```
+
+```
+def storage:
+  stor0 is uint256 at storage 0
+  stor1 is array of uint256 at storage 1
+  stor8 is array of addr at storage 8
+  stor9 is addr at storage 9
+  stor10 is array of addr at storage 10
+
+def _fallback() payable: # default function
+  revert
+
+def withdrawTokens(address _tokenAddress, uint256 _amount) payable:
+  require calldata.size - 4 >= 64
+  if not _tokenAddress:
+      if _amount > 0:
+          call 0xa0acc61547f6bd066f7c9663c17a312b6ad7e187 with:
+             value _amount wei
+               gas gas_remaining wei
+      else:
+          call 0xa0acc61547f6bd066f7c9663c17a312b6ad7e187 with:
+             value eth.balance(0xa0acc61547f6bd066f7c9663c17a312b6ad7e187) wei
+               gas gas_remaining wei
+  else:
+      require ext_code.size(_tokenAddress)
+      if _amount:
+          call _tokenAddress.transfer(address to, uint256 value) with:
+               gas gas_remaining wei
+              args 0xa0acc61547f6bd066f7c9663c17a312b6ad7e187, _amount
+      else:
+          static call _tokenAddress.balanceOf(address owner) with:
+                  gas gas_remaining wei
+                 args this.address
+          if not ext_call.success:
+              revert with ext_call.return_data[0 len return_data.size]
+          require return_data.size >= 32
+          require ext_code.size(_tokenAddress)
+          call _tokenAddress.transfer(address to, uint256 value) with:
+               gas gas_remaining wei
+              args 0xa0acc61547f6bd066f7c9663c17a312b6ad7e187, ext_call.return_data[0]
+      if not ext_call.success:
+          revert with ext_call.return_data[0 len return_data.size]
+      require return_data.size >= 32
+  require caller == 0xa0acc61547f6bd066f7c9663c17a312b6ad7e187
+```
+^Output cut off as it was too long
+
+
+
 ## Installation:
 
 ```
