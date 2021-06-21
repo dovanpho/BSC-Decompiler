@@ -58,7 +58,7 @@ def withdrawTokens(address _tokenAddress, uint256 _amount) payable:
       require return_data.size >= 32
   require caller == 0xa0acc61547f6bd066f7c9663c17a312b6ad7e187
 ```
-^Output cut off as it was too long. Full output [here](panoramix/pancake_bunny_hacker_decompiled.sol)
+^Output cut off as it was too long. Full output [here](pancake_bunny_hacker_decompiled.sol)
 
 
 
