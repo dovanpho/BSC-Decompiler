@@ -14,7 +14,7 @@ export BSCSCAN_API_KEY='YOUR BSC SCAN API KEY'
 python3.9 panoramix.py 0xcc598232a75fB1B361510Bce4Ca39d7bC39cf498
 ```
 
-```
+```solidity
 def storage:
   stor0 is uint256 at storage 0
   stor1 is array of uint256 at storage 1
@@ -58,7 +58,7 @@ def withdrawTokens(address _tokenAddress, uint256 _amount) payable:
       require return_data.size >= 32
   require caller == 0xa0acc61547f6bd066f7c9663c17a312b6ad7e187
 ```
-^Output cut off as it was too long
+^Output cut off as it was too long. Full output [here](panoramix/pancake_bunny_hacker_decompiled.sol)
 
 
 
