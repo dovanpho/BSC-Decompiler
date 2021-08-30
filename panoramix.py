@@ -56,7 +56,7 @@ coloredlogs.install(
 )
 
 
-VER = "17 Feb 2020"
+VER = "30 AUG 2021"
 
 addr_shortcuts = {
     "kitties": "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d",
